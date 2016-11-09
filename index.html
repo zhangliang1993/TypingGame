@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta charset="utf-8">
+	<style type="text/css">
+		body {
+			padding-top: 10px;
+		}
+		div {
+			width: 700px; height: 500px;
+			margin: auto;
+			background: url("bg.png") no-repeat;
+			background-size: 700px 500px;
+			text-align: center;
+			line-height: 40px;
+			position: relative;
+		}
+	</style>
+</head>
+<body>
+<div id="bg"></div>
+
+<p id="score">分数是: 0分</p>
+</body>
+<script type="text/javascript">
+
+	function createDiv(box){
+		var div = document.createElement("div")
+		div.style.width  = "40px";
+		div.style.height = "40px";		
+		div.style.background = "black";
+		div.style.color = "red";
+		div.style.position   = "absolute";
+		div.style.left = Math.random()*(700-40)+"px";
+
+		box.appendChild(div);
+		var timer = setInterval(function(){
+			div.style.top = div.offsetTop+3+ "px";
+			if (div.offsetTop > 460) {
+				div.parentNode.removeChild(div);
+			}
+		},50)
+
+		var random = new Array('a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z');
+		var index = Math.floor(Math.random()*random.length);
+		var word = document.createTextNode(random[index]);
+		div.appendChild(word)
+		return div;
+	}
+
+	var ground = document.getElementById('bg')
+	setInterval(function(){
+		createDiv(ground)		
+	},3000)
+
+	var count = 0  //得分
+	
+	var score = document.getElementById("score")
+	document.onkeypress = function(event){
+		var event = event || window.event
+		var curWord = event.which || event.keyCode || event.charCode
+		for(var i = 0; i < ground.childNodes.length; i++){
+			
+			if (String.fromCharCode(curWord) == ground.childNodes[i].innerHTML) {
+				count++;				
+				score.innerHTML = "分数是: " + count + "分"			
+				ground.childNodes[i].parentNode.removeChild(ground.childNodes[i]);	
+			}
+		}	
+	}
+</script>
+</html>
